@@ -2,7 +2,7 @@ import telebot
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telebot import TeleBot
 from math import *
-bot = telebot.TeleBot("7395220052:AAHO1wErfW0uvD_sAYZC2-tpdh0epuO5xxE") # Токен, полученный от BotFather.
+bot = telebot.TeleBot 'X' # Токен, полученный от BotFather.
 
 
 '''Списки и словари для работы заполнения текстового документа'''
