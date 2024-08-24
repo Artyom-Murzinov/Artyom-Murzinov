@@ -2,7 +2,7 @@
 - 👀 I’m interested in Металлообработка, автоматизация!
 - 🌱 I’m currently learning Python
 - 💞️ I’m looking to collaborate on проектам в области металлоообработки и ее автоматизации и повышению ее производительности
-- 📫 How to reach me: email murzinov_a@bk.ru tel.+79193850304
+- 📫 How to reach me:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 
