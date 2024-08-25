@@ -1,5 +1,5 @@
 from telebot.async_telebot import AsyncTeleBot
-from telebot.types import Message
+from telebot.types import Message, CallbackQuery
 from core.config import load_config
 from static.dictionary import greeting_text, help_text
 from utils.keyboard import gen_markup_keyboard
@@ -21,12 +21,37 @@ async def help_message(message: Message) -> None:
 
 
 @bot.message_handler(commands=["chose_cycle"])
-async def chose_cycle(message):
+async def chose_cycle(message: Message) -> None:
     await bot.send_message(message.from_user.id,
                            "Выберите нужный цикл!",
                            reply_markup=gen_markup_keyboard())
 
 
+@bot.callback_query_handler(func=lambda call: call.data == "circle")
+async def callback_query_circle_pocket(call: CallbackQuery) -> None:
+    await bot.answer_callback_query(call.id, text="Yes")
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'rectangle')
+async def callback_query_rectangle_pocket(call: CallbackQuery) -> None:
+    await bot.answer_callback_query(call.id, text="Yes")
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'radius')
+async def callback_query_radius_pocket(call: CallbackQuery) -> None:
+    await bot.answer_callback_query(call.id, text="Yes")
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'cut_setting')
+async def callback_query_radius_pocket(call: CallbackQuery) -> None:
+    await bot.answer_callback_query(call.id, text='Yes')
+
+
 @bot.message_handler(func=lambda message: True)
 async def echo_message(message):
     await bot.reply_to(message, message.text)
+
+
+@bot.callback_query_handler(func=lambda call: True)
+async def echo_callback_query(call: CallbackQuery) -> None:
+    await bot.answer_callback_query(call.id, text='all')

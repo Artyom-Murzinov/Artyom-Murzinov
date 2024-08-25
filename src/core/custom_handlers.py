@@ -45,42 +45,6 @@ def func_generato():
     return
 
 
-@bot.message_handler(func=lambda message: message.text == "Круглый карман")
-def echo_all(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id)
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word
-    func_generato()
-    return
 
-
-@bot.message_handler(func=lambda message: message.text == "Прямоугольный карман")
-def echo_all(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id)
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word_2
-    func_generato()
-
-
-@bot.message_handler(func=lambda message: message.text == "Радиусный карман")
-def echo_all(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id)
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word_3
-    func_generato()
-    return
-
-
-@bot.message_handler(func=lambda message: message.text == "Расчет режимов резания")
-def echo_all(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id)
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word_4
-    func_generato()
-    return
 
 """
