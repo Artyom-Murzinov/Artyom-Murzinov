@@ -8,19 +8,6 @@
         self.working_dict = {'list': []}
 
 
-
-
-@bot.message_handler(commands=["start"])
-def start_message(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id)
-    bot.send_message(
-        message.from_user.id,
-        "Выберите нужный цикл!",
-        reply_markup=gen_markup(),  # Отправляем клавиатуру.
-    )
-
-
 def func_generato():
     '''Заполняю текстовый документ нужными параметрами'''
     @bot.message_handler(func=lambda message: True)

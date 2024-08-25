@@ -17,3 +17,10 @@ async def greeting_text(user_full_name) -> str:
         f'Я бот помогающий составить управяющю программу для станка ЧПУ\n\n'
         f'Ознакомся с TODO job description\n\n'
     )
+
+
+async def help_text(user_full_name) -> str:
+    return (
+        f'{user_full_name}!\n\n'
+        f'Ознакомся с TODO help description\n\n'
+    )
