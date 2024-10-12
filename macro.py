@@ -1,177 +1,112 @@
 import telebot
-from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
-from telebot import TeleBot
-from math import *
 import os
 from dotenv import load_dotenv
+from graphic_explan.dictonary import dictonary, user
+from logika import*
+from keyboards import*
+from time import sleep
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-bot = telebot.TeleBot(TOKEN) # Токен, полученный от BotFather. # Токен, полученный от BotFather.
+bot = telebot.TeleBot(TOKEN)
 
-
-'''Списки и словари для работы заполнения текстового документа'''
-word = ["Введите диаметр отверстия: ", "Введите глубину отверстия, пишется с отрицательным значением: ", 
-        "Введите радиус фрезы: ", "Введите шаг фрезерования: ", 
-        "Поверхность детали: ", "Коэффициент перекрытия фрезы, 1-полный диаметр: "]
-word_2 = ["Введите длину кармана: ", "Введите ширину кармана: ", "Введите глубину кармана: ", 
-          "Поверхность детали: ", "Введите шаг фрезерования: ", "Введите радиус фрезы: ", 
-          "Коэффициент перекрытия фрезы: "]
-word_3 = ["Введите ширину кармана: ", "Введите длину кармана в градусах: ", "Введите глубину кармана: ", 
-          "Поверхность детали: ", "Начальный угол: ", "Средний радиус паза: ", "Введите радиус фрезы: ", 
-          "Введите шаг фрезерования: ", "Коэффициент перекрытия фрезы: "]
-word_4 = ['Введите скорость Vc', 'Введите диаметр фрезы D', 'Введите число зубев Z', 'Введите съем на зуб Fz']
-user = {}
-
-class User:
-    def __init__(self, user_id):
-        self.user_id = user_id
-        self.number_dict = {'number': 0}
-        self.conditions = {'kelb': []}
-        self.text_nc = {"text": "% \nO0001 \n"}
-        self.working_dict = {'list': []}
-
-
-
-def mathematics(number_list):
-    try:
-        n = (1000 * float(number_list[0]))/(3.14 * float(number_list[1]))
-        f = float(number_list[2]) * float(number_list[3]) * n
-        return int(n), int(f)
-    except:
-        return 'отправьте end, и выберите цикл', None
-
-
-def generating_file(action, user_id):
-    if action == word:
-        action1 = "KK"   
-    elif action == word_2:
-        action1 = "PK"
-    elif action == word_3:
-        action1 = "RK"
-    if action1 =='KK' or action1 =='PK' or action1 =='RK':
-        new_code = open("O0001.nc", "w")
-        with open(f"{action1.lower()}.txt", "r", encoding="utf-8") as pk:
-            info = pk.read()
-        new_code.write(user[user_id].text_nc['text'])
-        with open("O0001.nc", "a") as new_code:
-            new_code.write(info)
-        user[user_id].text_nc["text"] += info
-        return user[user_id].text_nc["text"]
-
-
-def func_error(argumet, numb):
-    '''Ловлю ошибку если на FLOAT'''
-    try:
-        float(argumet)
-        numb += 1
-        return numb, None
-    except :
-        return numb, 'Введите число'
+ 
+#Здесь бот оправляет клавиатуры пользователю
+@bot.message_handler(commands = ["start"])
+def start_message(message):
+    bot.send_message(message.from_user.id, "НАЖМИТЕ НА КНОПКУ! 👇👇 'Циклы' либо 'Помощь'", 
+                     reply_markup=reply_markup())  # Отправляем клавиатуру.
     
 
-def gen_markup():
-    # Создаём объекты кнопок.
-    button_1 = KeyboardButton(text="Круглый карман")
-    button_2 = KeyboardButton(text="Прямоугольный карман")
-    button_3 = KeyboardButton(text="Радиусный карман")
-    button_4 = KeyboardButton(text="Расчет режимов резания")
-
-    # Создаём объект клавиатуры, добавляя в него кнопки.
-    keyboard = ReplyKeyboardMarkup()
-    keyboard.add(button_1, button_2)
-    keyboard.add(button_3, button_4)
-    return keyboard
-
-
-@bot.message_handler(commands=["start"])
+@bot.message_handler(func=lambda message: message.text == "Циклы")
 def start_message(message):
-    user_id = message.from_user.id 
-    user[user_id] = User(user_id)
     bot.send_message(
         message.from_user.id,
-        "Выберите нужный цикл!",
+        "Нажмите на текст нужного вам цикла!👇",
         reply_markup=gen_markup(),  # Отправляем клавиатуру.
     )
 
 
-def func_generato():
+@bot.message_handler(func=lambda message: message.text == "Курсы USD, CNY")
+def start_message(message):
+    usd, cny = currency()
+    bot.send_message(message.chat.id, f"Доллар={usd}, Юань={cny}")
+
+
+@bot.message_handler(func=lambda message: message.text == "Помощь")
+def start_message(message):
+    bot.send_message(message.chat.id, "Если бот не реагирует, попробуйте ещё раз отправить команду /start.")
+
+# Логика заполнения переменных в G-коде
+def func_generator():
     '''Заполняю текстовый документ нужными параметрами'''
     @bot.message_handler(func=lambda message: True)
     def echo_all(message):
-        user_id = message.from_user.id 
-        if message.text.lower() == 'end':
-            bot.send_message(message.from_user.id, 'Прерываю цикл!')
-            return
-        number, erorrs = func_error(message.text, user[user_id].number_dict["number"])
-        user[user_id].number_dict["number"] = number
-        if erorrs != None:
-            bot.send_message(message.from_user.id, erorrs)
-        if number <= len(user[user_id].conditions['kelb']) -1:
-            bot.send_message(message.from_user.id, user[user_id].conditions['kelb'][number])
+        try:  
+            user_id = message.from_user.id
+            print(message.from_user.first_name, message.text)
+            number, erorrs = func_error(message.text, user[user_id].number_dict["number"], len(user[user_id].conditions['kelb']))
+            user[user_id].number_dict["number"] = number
+            if erorrs != None:
+                bot.send_message(message.from_user.id, erorrs)
+            if number <= len(user[user_id].conditions['kelb']) - 1:
+                try:
+                    msg = open(user[user_id].conditions['kelb'][number][1], '+rb')
+                    bot.send_photo(message.chat.id, msg, caption = user[user_id].conditions['kelb'][number][0])
+                except:
+                    bot.send_message(message.chat.id, user[user_id].conditions['kelb'][number])
     ##############################################################################
-        if user[user_id].conditions['kelb'] == word or user[user_id].conditions['kelb'] == word_2 or user[user_id].conditions['kelb'] == word_3:
-            '''Условие для записи G-кода'''
-            if number > 0:
-                user[user_id].text_nc["text"] += f"#{number} = {message.text}\n"
-            if number >= len(user[user_id].conditions["kelb"]):
-                gen_text = generating_file(user[user_id].conditions['kelb'], user_id)
-                bot.send_message(message.from_user.id, gen_text) 
-                return
-        elif user[user_id].conditions['kelb'] == word_4:
-            '''Условие деля записи режимов резания'''
-            if number > 0:
-                user[user_id].working_dict["list"].append(message.text)
-            if number >= len(user[user_id].conditions["kelb"]):
-                turnovers, supply = mathematics(user[user_id].working_dict["list"])
-                if supply != None:
-                    bot.send_message(message.from_user.id, f'число оборотов = {turnovers} \nПодача = {supply}')
-                else:
-                    bot.send_message(message.from_user.id, turnovers)
-                return       
-    return
+            if user[user_id].conditions['kelb'] == dictonary["round_pocket"
+                ] or user[user_id].conditions['kelb'] == dictonary["rectangular_pocket"
+                ] or user[user_id].conditions['kelb'] == dictonary["radius_pocket"
+                ] or user[user_id].conditions['kelb'] == dictonary["milling _plane"
+                ] or user[user_id].conditions['kelb'] == dictonary["conical_thread"]:
+                '''Условие для записи G-кода'''
+                if number > 0 and erorrs == None:
+                    user[user_id].text_nc["text"] += f"#{number} = {message.text}\n"
+                if number == len(user[user_id].conditions["kelb"]):
+                    generating_file(user[user_id].conditions['kelb'], user_id)
+                    bot.send_document(message.from_user.id, document=open('O0001.nc', 'rb'))
+            elif user[user_id].conditions['kelb'] == dictonary["cutting_mode"]:
+                '''Условие для записи режимов резания'''
+                if number > 0 and erorrs == None:
+                    user[user_id].working_dict["list"].append(message.text)
+                if number == len(user[user_id].conditions["kelb"]):
+                    turnovers, supply = mathematics(user[user_id].working_dict["list"])
+                    if supply != None:
+                        bot.send_message(message.from_user.id, f'число оборотов = {turnovers} \nПодача = {supply}')
+                    else:
+                        bot.send_message(message.from_user.id, turnovers)
+            elif user[user_id].conditions['kelb'] == dictonary["degrees_decimal"]:
+                '''Условие записи преобразования угла и расчет координат'''
+                if number > 0 and erorrs == None:
+                    user[user_id].working_dict["list"].append(message.text)
+                if number == len(user[user_id].conditions["kelb"]):
+                    ugol, osy = decimal_angle(user[user_id].working_dict["list"])
+                    if osy != None:
+                        bot.send_message(message.from_user.id, f'Угол = {ugol} \nОсь Х = {osy[0]}, Ось У = {osy[1]}')
+                    else:
+                        bot.send_message(message.from_user.id, ugol)
+        except Exception as er:
+            print(er)   
 
-# Генераторы циклов!!!
-@bot.message_handler(func=lambda message: message.text == "Круглый карман")
-def echo_all(message):
-    user_id = message.from_user.id
+
+
+@bot.callback_query_handler(func=lambda callback_query: True)
+def dog_answer(callback_query):
+    # Удаляем клавиатуру.
+    bot.edit_message_reply_markup(callback_query.from_user.id, callback_query.message.message_id)
+    
+    user_id = callback_query.from_user.id
     user[user_id] = User(user_id) 
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word   
-    func_generato()    
-    return
-
-
-@bot.message_handler(func=lambda message: message.text == "Прямоугольный карман")
-def echo_all(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id) 
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word_2
-    func_generato()
-    return
-
-
-@bot.message_handler(func=lambda message: message.text == "Радиусный карман")
-def echo_all(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id) 
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word_3
-    func_generato()
-    return
-
-
-@bot.message_handler(func=lambda message: message.text == "Расчет режимов резания")
-def echo_all(message):
-    user_id = message.from_user.id
-    user[user_id] = User(user_id) 
-    bot.send_message(message.from_user.id, 'Отправьте любую БУКВУ')
-    user[user_id].conditions['kelb'] = word_4
-    func_generato()
-    return
-
+    bot.send_message(callback_query.from_user.id, 'Отправьте любую БУКВУ')
+    user[user_id].conditions['kelb'] = dictonary[callback_query.data]
+    func_generator()
 
 
 if __name__ == "__main__":
-    print('Бот запущен')
-    bot.infinity_polling()
+    while True:
+        try:
+            print('Бот запущен')
+            bot.infinity_polling(none_stop=True)
+        except:
+            sleep(0.3) 
