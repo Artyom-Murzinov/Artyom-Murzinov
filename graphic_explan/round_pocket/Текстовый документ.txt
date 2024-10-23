@@ -1,0 +1,41 @@
+O0001 
+#1 = 100 (Diametr otw)
+#2 = -20 (glubina)
+#3 = 1 (shag)
+#4 = 0 (powerhnost detali)
+#5 = 10 (radius frezji)
+#6 = 1.5 (koef.perekr)
+#7 = 0.1(perwoe bez)
+#8 = 200 (wtoroe bezop)
+#500 = #1/2 - #5  бмыьч4ы5
+#502 = #5 * #6
+#503 = #4 + #7
+#504 = #503 - #3
+#505 = #502
+N1
+G0 X0 Y0
+Z#503
+G1 X#505
+G3 I-#505 Z#504
+G3 I-#505
+#505 = #505 + #502
+G1 X#505
+G3 I-#505
+IF [#505 EQ #500] GOTO 3
+#505 = #505 + #502
+IF [#505 LT #500] GOTO 2
+IF [#505 GT #500] THEN #505 = #500
+IF [#505 EQ #500] GOTO 2
+N3
+Z#503
+G0 X0 Y0
+IF [#504 EQ #2] GOTO 4
+#505 = #502
+#503 = #504 + #7
+#504 = #504 - #3
+IF [#504 GT #2] GOTO 1
+IF [#504 LT #2] THEN #504 = #2
+IF [#504 EQ #2] GOTO 1
+N4
+Z#8
+M99
