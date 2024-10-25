@@ -1,10 +1,9 @@
 from aiogram import Router, F
 from aiogram.filters import Command
-from aiogram.types import Message, ReplyKeyboardRemove
-from keyboards.keyboard_file import *
-from logic import *
-from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove, FSInputFile
-
+from aiogram.types import Message
+from mathematics.calculators import exchange_rate
+from keyboards.inline import cycles, calculator, metal_profile
+from keyboards.reply import cycles_calculator, get_yes_no_kb
 router = Router()
 
 

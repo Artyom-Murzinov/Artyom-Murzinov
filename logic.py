@@ -1,8 +1,10 @@
-import requests
 from graphic_explan.dictonary import dictonary
 from math import *
-from price import *
- 
+from mathematics.price import PriceCalculator
+from mathematics.UFG import UFG
+from mathematics.calculators import cutting_mode, angle_decimal
+
+
 user = {}
 class User():
     def __init__(self, user_id):
@@ -16,13 +18,10 @@ class User():
                      "wall_thickness": float()}
 
 
-def exchange_rate():
-    response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
-    data = response.json()
-    return data['Valute']['USD']['Value'], data['Valute']['CNY']['Value']
-
 
 def data_generator(user_id, cicle, argument):
+    """Функция получает от пользователя необходимые данные для дальнейшей работы с ними"""
+    """И отправляет результат пользователю"""
     if cicle in list(dictonary["part_price"]):
         user[user_id].number_dict['number']+=1
         number = user[user_id].number_dict['number']
@@ -32,7 +31,7 @@ def data_generator(user_id, cicle, argument):
             elif number > 0:
                 user[user_id].workpiece[list(user[user_id].workpiece)[number]] = argument           
             if number <= len(dictonary["part_price"][cicle])-1:
-                return dictonary["part_price"][cicle][number], None
+                return dictonary["part_price"][cicle][number][0], dictonary["part_price"][cicle][number][1]
             elif number == len(dictonary["part_price"][cicle]):
                 den = PriceCalculator(user[user_id].workpiece["profile"], 
                                 user[user_id].workpiece["alloy"], 
@@ -56,14 +55,21 @@ def data_generator(user_id, cicle, argument):
                     return dictonary[cicle][number], None
             elif len(dictonary[cicle]) == user[user_id].number_dict['number']:
                 if cicle == "cutting_mode":
-                    n = (1000 * float(user[user_id].variable["#1"]))/(3.14 * float(user[user_id].variable["#2"]))
-                    f = float(user[user_id].variable["#3"]) * float(user[user_id].variable["#4"]) * n
-                    return f'Число оборотов = {int(n)}об/мин, Подача = {int(f)}мм/мин 👍', None
+                    den = cutting_mode(user[user_id].variable["#1"], 
+                                 user[user_id].variable["#2"], 
+                                 user[user_id].variable["#3"], 
+                                 user[user_id].variable["#4"])
+                    return f'{den}', None
                 elif cicle == "degrees_decimal":
-                    ugol = int(user[user_id].variable["#1"]) + int(user[user_id].variable["#2"])/60 + int(user[user_id].variable["#3"])/3600
-                    osX = float(user[user_id].variable["#4"]) * cos(radians(ugol))
-                    osY = float(user[user_id].variable["#4"]) * sin(radians(ugol))
-                    return f'Угол равен = {round(ugol, 4)}, Ось X = {round(osX, 4)}, Ось Y = {round(osY, 4)} 👍', None
+                    den = angle_decimal(user[user_id].variable["#1"], 
+                                  user[user_id].variable["#2"],
+                                  user[user_id].variable["#3"], 
+                                  user[user_id].variable["#4"])
+                    return f'{den}', None
+                elif cicle == "UFG":
+                    den = UFG(float(user[user_id].variable["#1"]), 
+                              float(user[user_id].variable["#2"]))
+                    return f"{den}", None
                 elif cicle == "round_pocket" or cicle == "rectangular_pocket" or cicle == "radius_pocket" or cicle == "milling _plane" or cicle == "conical_thread":
                     for key, value in user[user_id].variable.items():
                         user[user_id].document += f'{key} = {value} \n'

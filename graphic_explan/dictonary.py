@@ -49,10 +49,23 @@ dictonary = {"round_pocket": [["Введите диаметр отверстия
                                ["Введите длину отрезка, хорду", "telegram_bot/graphic_explan/conical_thread/razmer_hordji.jpg"]],
             "cutting_mode": ["Введите скорость Vc", "Введите диаметр фрезы D", "Введите число зубев Z", "Введите съем на зуб Fz"],
             "degrees_decimal": ['Введите градусы (целое число): ', 'Введите минуты (целое число):', 'Введите секунды (целое число):', 'Введите радиус:'],
-            "part_price": {'Круг':['Введите марку сплава русскими буквами и цифрами', 'Введите диаметр в мм', 'Длину в мм'],
-                            'Квадрат': ['Введите марку сплава русскими буквами и цифрами', 'Введите сторону квадрата в мм', 'Длину в мм'],
-                            'Труба': ['Введите марку сплава русскими буквами и цифрами', 'Введите диаметр трубы в мм', 'Длину в мм', 'Введите толщину стенки в мм'],
-                            'Лист': ['Введите марку сплава русскими буквами цифрами', 'Введите ширину листа', 'Длину листа', 'Введите толщину листа в мм'],
-                            'Шестигранник': ['Введите марку сплава русскими буквами и цифрами', 'Введите размер в мм', 'Длину в мм']}
+            "part_price": {'Круг':[["Введите марку сплава", "telegram_bot/graphic_explan/dimensions_workpiece/poyasnenie.jpg"], 
+                                   ["Введите диаметр в мм", "telegram_bot/graphic_explan/dimensions_workpiece/Дииаметра прутка.jpg"], 
+                                   ["Длину в мм", "telegram_bot/graphic_explan/dimensions_workpiece/длина прутка.jpg"]],
+                            'Квадрат': [["Введите марку сплава", "telegram_bot/graphic_explan/dimensions_workpiece/poyasnenie.jpg"], 
+                                        ["Введите сторону квадрата в мм", "telegram_bot/graphic_explan/dimensions_workpiece/сторона квадрата.jpg"], 
+                                        ["Длину в мм", "telegram_bot/graphic_explan/dimensions_workpiece/длина квадрата.jpg"]],
+                            'Труба': [["Введите марку сплава", "telegram_bot/graphic_explan/dimensions_workpiece/poyasnenie.jpg"], 
+                                      ["Введите диаметр трубы в мм", "telegram_bot/graphic_explan/dimensions_workpiece/Диаметр трубы.jpg"], 
+                                      ["Длину в мм", "telegram_bot/graphic_explan/dimensions_workpiece/длина трубы.jpg"], 
+                                      ["Введите толщину стенки в мм", "telegram_bot/graphic_explan/dimensions_workpiece/толщина стенки трубы.jpg"]],
+                            'Лист': [["Введите марку сплава", "telegram_bot/graphic_explan/dimensions_workpiece/poyasnenie.jpg"], 
+                                     ["Введите ширину листа", "telegram_bot/graphic_explan/dimensions_workpiece/ширина листа.jpg"], 
+                                     ["Длину листа", "telegram_bot/graphic_explan/dimensions_workpiece/длина листа.jpg"], 
+                                     ["Введите толщину листа в мм", "telegram_bot/graphic_explan/dimensions_workpiece/толщина листа.jpg"]],
+                            'Шестигранник': [["Введите марку сплава", "telegram_bot/graphic_explan/dimensions_workpiece/poyasnenie.jpg"], 
+                                             ["Введите размер в мм", "telegram_bot/graphic_explan/dimensions_workpiece/размер шестигранника.jpg"], 
+                                             ["Длину в мм", "telegram_bot/graphic_explan/dimensions_workpiece/длина шестигранника.jpg"]]},
+                            "UFG":["Введите угол вокруг оси X: ", "Введите угол вокруг оси Z: "]
             } 
 
