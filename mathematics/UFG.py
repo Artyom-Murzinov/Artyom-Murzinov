@@ -133,16 +133,13 @@ class UFG:
         UFG.making_list(self)
         #cornerX = float(input('Введите угол вокруг оси X: '))
         #cornerZ = float(input('Введите угол вокруг оси Z: '))
-        if self.cornerZ == 0:
+        variable = 180
+        if -90 <= self.cornerX <= 90 and -90 <= self.cornerZ <= 90: 
+            if self.cornerX < 0:
+                self.cornerX *= -1
+                variable = 0
             corner1, corner2 = UFG.projecting_spline(self, self.a3l_list, self.a1l_list, self.a_list, self.cornerX)
-            return f'C = {round(corner1.item(), 3)}, A = {round(corner2.item(), 3)}'
+            return f'C = {round(corner1.item() -variable - self.cornerZ, 3)}, A = {round(corner2.item(), 3)}'
         else:
-            letter = 90 - self.cornerZ
-            cornerAl = degrees(atan(tan(radians(self.cornerX))/sin(radians(self.cornerZ))))
-            corner1, corner2 = UFG.projecting_spline(self, self.a1g_list, self.a1l_list, self.a_list, cornerAl)
-            cornerC = round(corner1.item(), 3), round(corner2.item(), 3)
-            corner1, corner2 = UFG.projecting_spline(self, self.a3g_list, self.a3l_list, self.a_list, cornerAl)
-            cornerA = round(corner1.item() - letter, 3), round(corner1.item() + letter, 3), round(corner2.item() - letter, 3), round(corner2.item() + letter, 3)
-            return f'C = {cornerC}, A = {cornerA}'
-
+            return f"Угол вокруг оси 'X' и 'Z' должен быть не более 90° и не менее -90°"
 
