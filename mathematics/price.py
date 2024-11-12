@@ -58,9 +58,10 @@ class PriceCalculator:
         for tag in bs.find_all('td'):
             if 'Цена, руб с НДС' in str(tag):
                 try:
-                    if "т" in str(tag) or "кг" in str(tag):                   
-                        price += float(re.findall(patterns, str(tag))[0][:-3].replace(' ', '')) 
-                        number += 1               
+                    if "шт" not in str(tag):
+                        if "т" in str(tag) or "кг" in str(tag):                  
+                            price += float(re.findall(patterns, str(tag))[0][:-3].replace(' ', '')) 
+                            number += 1               
                 except:
                     pass
         try:
