@@ -1,7 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove, FSInputFile
 from logic import data_generator, user, User
-from graphic_explan.dictonary import dictonary
 
 router = Router()
 
