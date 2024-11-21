@@ -3,7 +3,7 @@ from math import *
 from mathematics.price import PriceCalculator
 from mathematics.UFG import UFG
 from mathematics.calculators import cutting_mode, angle_decimal
-
+from mathematics.dxf import TextEngraving
 
 user = {}
 class User():
@@ -16,12 +16,31 @@ class User():
         self.workpiece = {"profile": None, "alloy": None, 
                      "size": None, "length": None, 
                      "wall_thickness": float()}
-
+        self.text_engraving = {"fonts": 0, "text_content": None, "text_position": (0, 0),
+                               "text_alignments": 1, "text_size": 3, "angle": 0,
+                               "shag": 1, 'oblique': 15, "text_circle" : 0}
 
 
 def data_generator(user_id, cicle, argument):
     """Функция получает от пользователя необходимые данные для дальнейшей работы с ними"""
     """И отправляет результат пользователю"""
+    if cicle == "engraving":
+        user[user_id].number_dict['number']+=1
+        number = user[user_id].number_dict['number']
+        if number < len(dictonary[cicle])+1:                        
+            if number < len(dictonary[cicle]):
+                user[user_id].text_engraving[list(user[user_id].text_engraving)[number-1]] = argument 
+            if number <= len(dictonary[cicle])-1:
+                return dictonary[cicle][number][0], dictonary[cicle][number][1]
+            elif number == len(dictonary[cicle]):
+                graving = TextEngraving(user[user_id].text_engraving)
+                with open("O0001.nc", "w") as file:
+                    file.write(str(graving))
+                return f'Проверьте результат, Перенесите этот файл на флешку 👆', 2
+        else:
+            return "Цикл завершен, выберите следующий цикл! 👍", None            
+
+
     if cicle in list(dictonary["part_price"]):
         user[user_id].number_dict['number']+=1
         number = user[user_id].number_dict['number']
@@ -33,14 +52,16 @@ def data_generator(user_id, cicle, argument):
             if number <= len(dictonary["part_price"][cicle])-1:
                 return dictonary["part_price"][cicle][number][0], dictonary["part_price"][cicle][number][1]
             elif number == len(dictonary["part_price"][cicle]):
-                user[user_id] = PriceCalculator(user[user_id].workpiece["profile"], 
+                price = PriceCalculator(user[user_id].workpiece["profile"], 
                                 user[user_id].workpiece["alloy"], 
                                 user[user_id].workpiece["size"], 
                                 user[user_id].workpiece["length"], 
                                 user[user_id].workpiece["wall_thickness"])
-                return f'{user[user_id]}', None
+                return f'{price}', None
         else:
             return "Цикл завершен, выберите следующий цикл! 👍", None
+
+
     else:        
         try:
             float(argument) 
@@ -108,6 +129,7 @@ def data_generator(user_id, cicle, argument):
                 return f'Перенесите этот файл на флешку 👆', 1   
         else:
             return "Цикл завершен, выберите следующий цикл! 👍", None
+
 
     
 
