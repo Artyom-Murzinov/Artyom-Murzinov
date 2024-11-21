@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove, FSInputFile
+from aiogram.types import Message, CallbackQuery,  FSInputFile
 from logic import data_generator, user, User
 
 router = Router()
@@ -11,9 +11,15 @@ async def message_with_text(message: Message):
                                 user[message.from_user.id].conditions['cycle_calc'], 
                                 argument)
     print(message.from_user.full_name, message.from_user.id, message.text)
-    if jpg == None: await message.answer(text)
-    elif jpg == 1: await message.answer_document(FSInputFile('O0001.nc'), caption = text)
-    else: await message.answer_photo(FSInputFile(jpg), caption = text)
+    if jpg == None: 
+        await message.answer(text)
+    elif jpg == 1: 
+        await message.answer_document(FSInputFile('O0001.nc'), caption = text)
+    elif jpg == 2:
+        await message.answer_photo(FSInputFile('your.png'))
+        await message.answer_document(FSInputFile('O0001.nc'), caption = text)
+    else: 
+        await message.answer_photo(FSInputFile(jpg), caption = text)
 
 
 @router.callback_query(F.data)
@@ -27,6 +33,5 @@ async def send_random_value(callback: CallbackQuery):
     else:
         await callback.message.answer(text=text)
 
-    #Удаляю инлайн клавиатуру    
-    await callback.message.delete()
-    
+
+
