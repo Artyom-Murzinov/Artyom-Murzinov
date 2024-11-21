@@ -93,6 +93,14 @@ dictonary = {"round_pocket": [["Введите диаметр отверстия
                                               ["Введите подход отход к контуру от контура", "telegram_bot/graphic_explan/thread_milling/подъезд к контуру.jpg"],
                                               ["Введите безопасный подъезд к поверхности", "telegram_bot/graphic_explan/thread_milling/безоп к поверхности.jpg"],
                                               ["Введите безопасный отъезд от поверхности", "telegram_bot/graphic_explan/thread_milling/безопас отъезд.jpg"]],
-                            "engraving":["Введите текст"]
+                            "engraving":[["Выберите шрифт, от 1 до 10", "telegram_bot/graphic_explan/text_engraving/типы шрифтов.jpg"],
+                                         ["Введите текст", "telegram_bot/graphic_explan/text_engraving/текст.jpg"],
+                                         ["Введите координаты текста формат 'X, Y' пример: 10, 5", "telegram_bot/graphic_explan/text_engraving/координаты текста.jpg"],
+                                         ["Выберите расположение текста от 1 до 6", "telegram_bot/graphic_explan/text_engraving/расположение текста.jpg"],
+                                         ["Введите высоту шрифта", "telegram_bot/graphic_explan/text_engraving/высота текста.jpg"],
+                                         ["Введите угол поворота текста", "telegram_bot/graphic_explan/text_engraving/угол поворота текста.jpg"],
+                                         ["Растягивание текста 1 - это нормальная величина установленная шрифтом", "telegram_bot/graphic_explan/text_engraving/растягивание текста.jpg"],
+                                         ["Наклон текста в градусах не более 15", "telegram_bot/graphic_explan/text_engraving/наклон текста.jpg"]]
             } 
 
+ 
